@@ -1,0 +1,17 @@
+1031上线sop
+1）表结构录入到项目sql记录+线上更新数据库
+2）nacos更新到生产环境
+support的properties配置如下：
+operation.platform.web.host=http://192.168.34.79:8803
+operation.platform.web.paramKey=qw28shjwk834j3of
+operation.platform.web.workOrder.checkField=bgCmcc@89*475gh#jgyu5h
+
+web的nacos配置：
+#OpenAPI
+openApi.page.size=1000
+3）标签、通讯录菜单更新到线上  超级特服号、智慧校园的菜单和应用加上
+4)代码注释了SysAppController 上线验证没问题后 下次迭代删除
+5）删除banner表 和相关代码
+6）删除news表、news_audit表和相关代码
+7）删除sys_area_extra表和相关代码
+8）删除portal_visit_num表和相关代码

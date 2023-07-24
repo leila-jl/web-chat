@@ -1,0 +1,29 @@
+#spring:
+##  profiles:
+##    active: dev
+#  application:
+#    name: xslt-auth
+#
+#
+##---
+###公司-阿里云环境（对应dev代码分支）
+##server:
+##  port: 8081
+##spring:
+##  application:
+##    name: xslt-auth
+##  profiles: dev
+##  cloud:
+##    nacos:
+##      discovery:
+##        server-addr:   #配置Nacos地址
+##        username: nacos
+##        password: nacos
+##        namespace:
+##      config:
+##        server-addr:   #配置Nacos地址
+##        file-extension: yaml
+##        username: nacos
+##        password: nacos
+##        namespace:
+

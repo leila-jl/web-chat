@@ -1,0 +1,12 @@
+1031上线sop
+1）表结构录入到项目sql记录+线上更新数据库
+创建9个新表
+更新表：role表 和menu表
+初始化数据表 special_function offer_info
+2）nacos更新到生产环境
+web的properties配置如下：
+#和融合平台资源订购map
+resource.order.applicationIdAndSecretMap={"a":"aa"}
+
+support的properties配置如下：
+数据库的配置

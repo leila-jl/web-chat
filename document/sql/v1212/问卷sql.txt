@@ -1,0 +1,100 @@
+--------------创建问卷表
+CREATE TABLE `questionnaire` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `title` varchar(200) NOT NULL COMMENT '问卷标题',
+  `describes` varchar(1200) DEFAULT NULL COMMENT '问卷描述',
+  `area_id` bigint(20) NOT NULL COMMENT '所属区域ID',
+  `answerer_area_id` bigint(20) NOT NULL COMMENT '答题投放区域ID',
+  `type` int(1) NOT NULL COMMENT '类型（1-务工，2-培训）',
+  `msg_num` int(11) NOT NULL COMMENT '发送短信数量',
+  `answer_num` int(11) DEFAULT '0' COMMENT '提交答案数',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '问卷状态（0已结束 1收集中 2已停止）',
+  `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否删除（0否，1是）',
+  `updater_id` bigint(20) NOT NULL COMMENT '修改人id',
+  `creator_id` bigint(20) NOT NULL COMMENT '创建人id',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COMMENT='问卷表';
+
+--------------创建问卷答案表
+CREATE TABLE `questionnaire_answer` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `questionnaire_id` bigint(20) NOT NULL COMMENT '问卷id',
+  `user_answer` text COMMENT '用户答案',
+  `answerer_name` varchar(20) DEFAULT NULL COMMENT '问卷填写人名称',
+  `answerer_phone` varchar(11) DEFAULT NULL COMMENT '问卷填写人手机号',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COMMENT='问卷答题表';
+
+--------------创建问卷问题表
+CREATE TABLE `questionnaire_question` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `questionnaire_id` bigint(20) NOT NULL COMMENT '问卷id',
+  `main_content` varchar(500) NOT NULL COMMENT '主题干',
+  `type` int(1) NOT NULL COMMENT '题目类型 1-单选 2-多选 3-填空 4-图片上传 5-多选+填空',
+  `sub_content` varchar(5000) DEFAULT NULL COMMENT '副题干 选择题选项，以#%#分割，查询时需切割',
+  `sort` bigint(20) NOT NULL DEFAULT '0' COMMENT '问卷顺序',
+  `is_required` bit(1) DEFAULT NULL COMMENT '是否必填（0否， 1是）',
+  `updater_id` bigint(20) NOT NULL COMMENT '修改人id',
+  `creator_id` bigint(20) NOT NULL COMMENT '创建人id',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=785 DEFAULT CHARSET=utf8mb4 COMMENT='问卷问题表';
+
+--------------创建问卷模板表
+CREATE TABLE `questionnaire_template` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `title` varchar(200) NOT NULL COMMENT '模板标题',
+  `describes` varchar(1200) DEFAULT NULL COMMENT '模板描述',
+  `type` int(1) NOT NULL COMMENT '类型（1-务工，2-培训）',
+  `creator_id` bigint(20) NOT NULL COMMENT '创建人id',
+  `updater_id` bigint(20) NOT NULL COMMENT '修改人id',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='问卷模板表';
+
+--------------创建问卷模板问题表
+CREATE TABLE `questionnaire_template_question` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `template_id` bigint(20) NOT NULL COMMENT '问卷模板id',
+  `main_content` varchar(500) NOT NULL COMMENT '主题干',
+  `type` int(1) NOT NULL COMMENT '题目类型 1-单选 2-多选 3-填空 4-图片上传  5-多选+填空',
+  `sub_content` varchar(5000) DEFAULT NULL COMMENT '副题干 选择题选项，以#%#分割，查询时需切割',
+  `sort` bigint(20) NOT NULL DEFAULT '0' COMMENT '问卷顺序',
+  `is_required` bit(1) DEFAULT b'0' COMMENT '是否必填（0否， 1是）',
+  `creator_id` bigint(20) NOT NULL COMMENT '创建人id',
+  `updater_id` bigint(20) NOT NULL COMMENT '修改人id',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='问卷模板问题表';
+
+--------------添加初始默认模板
+INSERT INTO `questionnaire_template` (`id`, `title`, `describes`, `type`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('1', '务工需求收集模板1', '为了深入了解农村外出务工的需求，特开展本次调查。本次调查只是用于统计分析和介绍工作，我们将对调查内容予以严格保密，并诚恳地希望得到您的配合，谢谢合作！', '1', '1', '1', '2022-11-21 09:56:20', '2022-11-21 10:52:39');
+INSERT INTO `questionnaire_template` (`id`, `title`, `describes`, `type`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('2', '培训需求收集模板1', '为了更好地帮助各位家人提升岗位技能，以满足岗位要求及个人成长需求，请积极参加问卷填写。', '2', '1', '1', '2022-11-21 09:56:59', '2022-11-21 09:57:01');
+
+--------------添加初始默认模板所含问题
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('1', '1', '姓名', '3', NULL, '1', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('2', '1', '手机号码', '3', NULL, '2', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('3', '1', '您的年龄是？', '1', '18岁以下#%#18-30岁#%#31-45岁#%#46-60岁#%#61岁以上', '3', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('4', '2', '姓名', '3', NULL, '1', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('5', '2', '手机号码', '3', NULL, '2', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('6', '2', '您的年龄是？', '1', '18岁以下#%#18-30岁#%#31-45岁#%#46-60岁#%#61岁以上', '3', b'1', '1', '1', '2022-11-21 10:30:45', '2022-11-21 10:30:48');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('7', '1', '性别', '1', '男#%#女', '4', b'1', '1', '1', '2022-11-25 16:15:07', '2022-11-25 16:15:12');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('8', '1', '地址', '3', NULL, '5', b'1', '1', '1', '2022-11-25 16:15:47', '2022-11-25 16:15:49');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('9', '1', '受教育程度', '1', '初中及以下#%#高中#%#大专#%#本科#%#硕士及以上', '6', b'1', '1', '1', '2022-11-25 16:17:06', '2022-11-25 16:17:11');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('10', '1', '您现在的职业是', '1', '务农#%#个体工商户#%#自由职业者#%#其他', '7', b'1', '1', '1', '2022-11-25 16:18:17', '2022-11-25 16:18:20');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('11', '1', '您期望的务工工种是？（可多选）', '5', '\r\n机械加工与制造#%#电子电器#%#数控技术#%#机电技术#%#化工#%#设备安装与维修#%#烹饪#%#家电维修#%#建筑装修#%#医疗保健#%#计算机应用#%#汽车维修#%#其他', '8', b'1', '1', '1', '2022-11-25 16:21:05', '2022-11-25 16:21:08');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('12', '1', '您期望的平均收入是？', '1', '1500-2500元#%#2600-3500元#%#3600-4500元#%#4600元及以上', '9', b'1', '1', '1', '2022-11-25 16:22:55', '2022-11-25 16:22:58');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('13', '1', '您外出务工的原因是？（可多选）', '2', '\r\n在家发展机会小#%#周围的人都出去打工了#%#年轻人应该出去闯，增长见识#%#改善家庭条件', '10', b'1', '1', '1', '2022-11-25 16:24:29', '2022-11-25 16:24:31');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('14', '2', '性别', '1', '男#%#女', '4', b'1', '1', '1', '2022-11-25 16:15:07', '2022-11-25 16:15:12');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('15', '2', '地址', '3', NULL, '5', b'1', '1', '1', '2022-11-25 16:15:47', '2022-11-25 16:15:49');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('16', '2', '在本岗位的工作年限', '1', '1年及以下#%#1-3年#%#4-6年#%#7-10年#%#10年及以上', '6', b'1', '1', '1', '2022-11-25 16:28:24', '2022-11-25 16:28:26');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('17', '2', '在岗技能的熟练程度', '1', '非常熟练#%#比较熟练#%#不熟练#%#非常不熟练', '7', b'1', '1', '1', '2022-11-25 16:29:20', '2022-11-25 16:29:23');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('18', '2', '您是否具有职业技术证书？', '1', '是#%#否', '8', b'1', '1', '1', '2022-11-25 16:30:05', '2022-11-25 16:30:08');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('19', '2', '您认为职业技能证书对您的帮助大吗？', '1', '帮助很大#%#帮助一般#%#完全没有帮助', '9', b'1', '1', '1', '2022-11-25 16:31:09', '2022-11-25 16:31:11');
+INSERT INTO `questionnaire_template_question` (`id`, `template_id`, `main_content`, `type`, `sub_content`, `sort`, `is_required`, `creator_id`, `updater_id`, `create_time`, `update_time`) VALUES ('20', '2', '您认为培训有用吗？是否愿意参加？', '1', '非常有帮助，希望多组织各种培训#%#有较大帮助，乐意参加#%#多少有点帮助，回去听听#%#有帮助，但是没时间参加#%#基本没有什么帮助，不会参加', '10', b'1', '1', '1', '2022-11-25 16:32:28', '2022-11-25 16:32:30');
