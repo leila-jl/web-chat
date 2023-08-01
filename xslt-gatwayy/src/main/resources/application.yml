@@ -21,12 +21,6 @@ spring:
             - Path=/xslt-auth/**  #断言判断是否以xslt-auth开头的请求地址，是则放行（断言可以有多个，断言由Predicate Factory断言工厂读取并处理，这里的path=/xslt-auth/**由PathRoutePredicateFactory类处理）
           filters:
             - StripPrefix=1
-        - id: txslt-web
-          uri: lb://txslt-web
-          predicates:
-            - Path=/txslt-web/**
-          filters:
-            - StripPrefix=1
     nacos:
       server-addr: #阿里云nacos地址
   security:
@@ -35,8 +29,8 @@ spring:
         jwt:
           jwk-set-uri: 'http://192.168.34.102:8902/auth/rsa/publicKey' #配置RSA的公钥访问地址 (需改动)
   redis:
-    host: 192.168.34.85 #Redis服务器地址
-    port: 6379 #Redis服务器连接端口
+    host:  #Redis服务器地址
+    port:  #Redis服务器连接端口
     database: 5 #Redis数据库索引（默认为0）
     password:  #Redis服务器连接密码（默认为空）
     timeout: 3000ms #连接超时时间（毫秒）
